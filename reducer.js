@@ -34,7 +34,7 @@ function switchTimer(){
 //Reducer
 
 //localStorage로 workTime, restTime, words 저장해야함.
-let TIMER_DURATION = 10;
+let TIMER_DURATION = 4500;
 
 
 const initialState = {
