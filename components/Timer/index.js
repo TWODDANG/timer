@@ -6,12 +6,13 @@ import {createStackNavigator} from 'react-navigation-stack';
 import {createAppContainer} from "react-navigation";
 
 function mapStateToProps(state){
-    const {isPlaying, elapsedTime, timeDuration, toggleRest} = state;
+    const {isPlaying, elapsedTime, timeDuration, toggleRest, fontLoaded} = state;
     return {
         isPlaying,
         elapsedTime,
         timeDuration,
-        toggleRest
+        toggleRest,
+        fontLoaded
     }
 }
 
@@ -21,10 +22,10 @@ function mapDispatchToProps(dispatch){
         restartTimer: bindActionCreators(tomatoActions.restartTimer, dispatch),
         addSecond: bindActionCreators(tomatoActions.addSecond, dispatch),
         switchTimer: bindActionCreators(tomatoActions.switchTimer, dispatch),
+        fontLoader: bindActionCreators(tomatoActions.loadFont, dispatch),
 
     }
 }
-
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Timer)

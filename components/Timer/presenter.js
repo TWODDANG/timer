@@ -3,7 +3,12 @@ import {View, Text, StyleSheet, StatusBar} from 'react-native';
 import Button from '../Button';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createAppContainer} from "react-navigation";
+import FontText from "../FontText";
+import * as Font from "expo-font";
 
+/*
+{fontLoaded ? <Text style={{...styles.twoddang, fontFamily:'Montserrat-MediumItalic'}}>이댕댕 일 좀 똑바로 할 것!</Text> : null}
+*/
 const formatTime = (time) => {
     console.log(time);
     let minutes = Math.floor(time/60);
@@ -32,12 +37,19 @@ class Timer extends Component {
         } else if(currentProps.isPlaying && !nextProps.isPlaying){
                 clearInterval(this.state.timerInterval);
         }
+    }
 
+    async componentDidMount() {
+        await Font.loadAsync({
+            'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),
+            'Montserrat-MediumItalic': require('../../assets/fonts/Montserrat-MediumItalic.ttf'),
+        });
+        this.props.fontLoader();
     }
 
     render() {
         const{isPlaying, elapsedTime, timeDuration,
-            startTimer, restartTimer,addSecond, toggleRest, switchTimer} = this.props;
+            startTimer, restartTimer,addSecond, toggleRest, switchTimer, fontLoaded} = this.props;
         console.log(toggleRest);
         console.log(this.props.navigation);
         return (
@@ -51,7 +63,7 @@ class Timer extends Component {
                 </View>
 
                 <View style={styles.lower}>
-                    <Text style={styles.twoddang}>이댕댕 일 좀 똑바로 할 것!</Text>
+                    {fontLoaded ? <Text style={{...styles.twoddang, fontFamily:'Montserrat-MediumItalic'}}>It's nice to meet you</Text> : null}
                     <View style={styles.button}>
                     {!isPlaying &&
                     (<View style={styles.startbutton}>
@@ -64,10 +76,7 @@ class Timer extends Component {
                     </View>)}
                     {toggleRest &&  <Button iconName='toggle-off' onPress={switchTimer}/>}
                     {!toggleRest && <Button iconName='toggle-on' onPress={switchTimer}/>}
-
                     </View>
-
-
                 </View>
 
             </View>

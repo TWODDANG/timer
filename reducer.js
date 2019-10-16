@@ -2,6 +2,7 @@
 import {AsyncStorage} from 'react-native';
 
 //Actions
+const LOAD_FONT = 'LOAD_FONT';
 const START_TIMER = 'START_TIMER';
 const RESTART_TIMER = 'RESTART_TIMER';
 const ADD_SECOND = 'ADD_SECOND';
@@ -26,9 +27,16 @@ function addSecond(){
     }
 }
 
+
 function switchTimer(){
     return {
         type: SWITCH_TIMER
+    }
+}
+
+function loadFont(){
+    return {
+        type: LOAD_FONT
     }
 }
 //Reducer
@@ -44,7 +52,8 @@ const initialState = {
     toggleRest: false,
     workTime: 10,
     restTime: 5,
-    words: '이댕댕'
+    words: '이댕댕',
+    fontLoaded: false,
 };
 
 
@@ -59,6 +68,8 @@ function reducer(state=initialState, action){ // root reducer
             return applyAddSecond(state);
         case SWITCH_TIMER:
             return applySwitchTimer(state);
+        case LOAD_FONT:
+            return applyLoadFont(state);
         default:
             return state;
     }
@@ -111,10 +122,17 @@ function applySwitchTimer(state){
         timeDuration: TIMER_DURATION,
     }
 }
+
+function applyLoadFont(state){
+    return {
+        ...state,
+        fontLoaded: true,
+    }
+}
 //Export Action Creators
 
 const actionCreators = {
-    startTimer, restartTimer, addSecond, switchTimer
+    startTimer, restartTimer, addSecond, switchTimer, loadFont
 };
 
 export {actionCreators};
