@@ -7,8 +7,6 @@ class FontText extends Component {
 
     Loadtext(){
         if(this.props.fontLoaded){
-            console.log(this.props.fontLoaded);
-            console.log('fontloaded!');
             return <Text style={this.props.style}>{this.props.children}</Text>
         } else {
             return <Text>No fontLoaded!</Text>

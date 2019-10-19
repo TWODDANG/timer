@@ -1,5 +1,4 @@
-import * as types from '../actions';
-let TIMER_DURATION = 4500; //TIMER_DURATION 문제 생길텐데,, 좀 있다 고치셈.
+import * as types from '../actions';let TIMER_DURATION = 5; //TIMER_DURATION 문제 생길텐데,, 좀 있다 고치셈.
 
 
 const initialState = {
@@ -8,7 +7,8 @@ const initialState = {
         toggleRest: false,
         myData: null,
         fontLoaded: false,
-        timeDuration : TIMER_DURATION,
+        workTime: 10,
+        restTime: 5,
 };
 
 function otherReducer(state=initialState, action){
@@ -20,16 +20,15 @@ function otherReducer(state=initialState, action){
         case types.RESTART_TIMER:
             return applyRestartTimer(state);
         case types.ADD_SECOND:
-            return applyAddSecond(state);
+            return applyAddSecond(state, action.time);
         case types.SWITCH_TIMER:
-            return applySwitchTimer(state);
+            return applySwitchTimer(state, action.time);
         default :
             return state;
     }
 }
 
 function applyStartTimer(state){
-    console.log('applystarttimer');
     return {
         ...state,
         isPlaying: true,
@@ -44,35 +43,29 @@ function applyRestartTimer(state){
     }
 }
 
-function applyAddSecond(state){
-    if(state.elapsedTime < state.timeDuration){
+function applyAddSecond(state, time){
+    if(state.elapsedTime < time){
         return {
             ...state,
             elapsedTime: state.elapsedTime + 1
         }
     } else {
         if(state.toggleRest){ // 쉰 상태이면은 일해야지
-            alert('이제 일해라 닝겐아!!');
+            alert('Do That Work! HUMAN!');
         } else {
-            alert('이제 쉬어라 친구여');
+            alert('Now You Can Take A Break');
         }
         return applySwitchTimer(state);
     }
 }
 
 function applySwitchTimer(state){
-    if(!state.toggleRest){
-        TIMER_DURATION = state.restTime;
-    } else {
-        TIMER_DURATION = state.workTime;
-    }
 
     return {
         ...state,
         isPlaying: false,
         elapsedTime: 0,
         toggleRest: !state.toggleRest,
-        timeDuration: TIMER_DURATION,
     }
 }
 

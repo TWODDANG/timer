@@ -5,7 +5,7 @@ export const RESTART_TIMER = 'RESTART_TIMER';
 export const ADD_SECOND = 'ADD_SECOND';
 export const SWITCH_TIMER = 'SWITCH_TIMER';
 export const SAVE_DATA = 'SAVE_DATA';
-export const GET_DATA = 'GET_DATA';
+
 
 
 //Action Creators
@@ -21,16 +21,17 @@ function restartTimer(){
     }
 }
 
-function addSecond(){
+function addSecond(time){
     return {
-        type: ADD_SECOND
+        type: ADD_SECOND,
+        time
     }
 }
 
 
 function switchTimer(){
     return {
-        type: SWITCH_TIMER
+        type: SWITCH_TIMER,
     }
 }
 
@@ -48,15 +49,10 @@ function saveData(data, name){
     }
 }
 
-function getData(name){
-    return {
-        type: GET_DATA,
-        name,
-    }
-}
+
 
 const actionCreators = {
-    startTimer, restartTimer, addSecond, switchTimer, loadFont, saveData, getData
+    startTimer, restartTimer, addSecond, switchTimer, loadFont, saveData
 };
 
 export {actionCreators};

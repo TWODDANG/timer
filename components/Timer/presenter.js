@@ -22,16 +22,22 @@ class Timer extends Component {
     componentWillReceiveProps(nextProps, nextContext) {
         const currentProps = this.props;
         if(!currentProps.isPlaying && nextProps.isPlaying){
-            console.log('카운트 시작');
-            const timerInterval = setInterval(()=>{
-                currentProps.addSecond()
-            },1000);
+            // 타이머 멈춰있고, 시작하려고 할때
+            let timerInterval;
+            if(nextProps.toggleRest){
+               timerInterval = setInterval(()=>{
+                    currentProps.addSecond(nextProps.restTime)
+                },1000);
+            } else {
+                timerInterval = setInterval(()=>{
+                    currentProps.addSecond(nextProps.workTime)
+                },1000);
+            }
             this.setState({
                 timerInterval
             })
         } else if(currentProps.isPlaying && !nextProps.isPlaying){
-            console.log('카운트 안함');
-            //isplaying 안 바뀜
+            // 타이머 작동하고 있고, 끌려고 할때
                 clearInterval(this.state.timerInterval);
         }
     }
@@ -45,9 +51,8 @@ class Timer extends Component {
     }
 
     render() {
-        const{isPlaying, elapsedTime, timeDuration,
-            startTimer, restartTimer,addSecond, toggleRest, switchTimer, fontLoaded} = this.props;
-        console.log(this.props);
+        const{isPlaying, elapsedTime,
+            startTimer, restartTimer, toggleRest, switchTimer, workTime, restTime, words} = this.props;
         return (
             <View style={styles.container}>
                 <StatusBar barStyle={'light-content'}/>
@@ -55,9 +60,10 @@ class Timer extends Component {
                     <Button iconName='cog'  onPress={() => this.props.navigation.navigate('Setting')}/>
                 </View>
                 <View style={styles.upper}>
-                    <Text style={styles.time}>{formatTime(timeDuration-elapsedTime)}</Text>
+                    {!toggleRest ?  <Text style={styles.time}>{formatTime(workTime-elapsedTime)}</Text> : null}
+                    {toggleRest ? <Text style={styles.time}>{formatTime(restTime-elapsedTime)}</Text> : null}
                 </View>
-                <FontText style={styles.twoddang}> It's nice to meet you</FontText>
+                <FontText style={styles.twoddang}> {words}</FontText>
                 <View style={styles.lower}>
 
                     <View style={styles.button}>

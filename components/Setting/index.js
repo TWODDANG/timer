@@ -7,16 +7,8 @@ import {connect} from 'react-redux';
 
 
 //  let seconds = parseInt(time % 60, 10);
-const getHour = (time) => {
-    let hours = Math.floor(time/3600);
-    return `${hours < 10 ? `0${hours}` : null}`
-};
-
-const getMinute = (time) => {
-    let hours = Math.floor(time/3600);
-    time -= hours * 3600;
-    let minutes = Math.floor(time / 60);
-    return `${minutes < 10 ? `0${minutes}` : minutes}`
+const formatTime = (time) => {
+    return `${time < 10 ? `0${time}` : null}`
 };
 
 
@@ -69,7 +61,7 @@ class Setting extends Component {
                                       keyboardType='number-pad'
                                         style={styles.textInput}
                                       textAlign={'right'}
-                           placeholder={workHour}
+                           placeholder={formatTime(workHour)}
                            onBlur={event => {saveData(this.state.workHour, 'workHour')
                            }}/>
                            <Text style={styles.text}> : </Text>
@@ -77,7 +69,7 @@ class Setting extends Component {
                                       value={this.state.workMinute}
                                       keyboardType='number-pad'
                                       style={styles.textInput}
-                           placeholder={workMinute}
+                           placeholder={formatTime(workMinute)}
                            onBlur={event => saveData(this.state.workMinute, 'workMinute')}/>
                        </View>
                    </View>
@@ -89,7 +81,7 @@ class Setting extends Component {
                                       keyboardType='number-pad'
                                       style={styles.textInput}
                                       textAlign={'right'}
-                                      placeholder={breakHour}
+                                      placeholder={formatTime(breakHour)}
                                       onBlur={event => saveData(this.state.breakHour, 'breakHour')}
                            />
                            <Text style={styles.text}> : </Text>
@@ -98,7 +90,7 @@ class Setting extends Component {
                                       keyboardType='number-pad'
                                       style={styles.textInput}
                                       onBlur={event => saveData(this.state.breakMinute, 'breakMinute')}
-                                      placeholder={breakMinute}/>
+                                      placeholder={formatTime(breakMinute)}/>
                        </View>
                    </View>
                    <View style={styles.words}>
@@ -106,7 +98,8 @@ class Setting extends Component {
                        <TextInput
                            style={{color: 'white',
                                fontSize: 30,
-                               fontWeight: '100'}}
+                               fontWeight: '100',
+                           width: 400}}
                            onChangeText={words => this.setState({ words })}
                            value={this.state.words}
                            textAlign={'center'}
