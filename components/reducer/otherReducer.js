@@ -1,5 +1,5 @@
 import * as types from '../actions';let TIMER_DURATION = 5; //TIMER_DURATION 문제 생길텐데,, 좀 있다 고치셈.
-
+import * as Haptics from 'expo-haptics';
 
 const initialState = {
         isPlaying: false,
@@ -52,9 +52,11 @@ function applyAddSecond(state, time){
     } else {
         if(state.toggleRest){ // 쉰 상태이면은 일해야지
             alert('Do That Work! HUMAN!');
+            Haptics.impactAsync('heavy');
         } else {
             alert('Now You Can Take A Break');
-        }
+            Haptics.impactAsync('heavy');
+    }
         return applySwitchTimer(state);
     }
 }
