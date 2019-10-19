@@ -1,12 +1,13 @@
 import {connect} from 'react-redux';
 import Timer from './presenter';
 import {bindActionCreators} from "redux";
-import {actionCreators as tomatoActions} from '../../reducer';
+import {actionCreators as tomatoActions} from '../actions';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createAppContainer} from "react-navigation";
 
 function mapStateToProps(state){
-    const {isPlaying, elapsedTime, timeDuration, toggleRest, fontLoaded} = state;
+    const {isPlaying, elapsedTime, toggleRest, fontLoaded, timeDuration} = state.other;
+    console.log(state);
     return {
         isPlaying,
         elapsedTime,

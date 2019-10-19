@@ -1,23 +1,18 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, StatusBar} from 'react-native';
 import Button from '../Button';
-import {createStackNavigator} from 'react-navigation-stack';
-import {createAppContainer} from "react-navigation";
 import FontText from "../FontText";
 import * as Font from "expo-font";
 
-/*
-{fontLoaded ? <Text style={{...styles.twoddang, fontFamily:'Montserrat-MediumItalic'}}>이댕댕 일 좀 똑바로 할 것!</Text> : null}
-*/
+// {fontLoaded ? <Text style={{...styles.twoddang, fontFamily:'Montserrat-MediumItalic'}}>It's nice to meet you</Text> : null}
+//<FontText style={styles.twoddang}> It's nice to meet you</FontText>
+
 const formatTime = (time) => {
-    console.log(time);
     let minutes = Math.floor(time/60);
     time -= minutes * 60;
     let seconds = parseInt(time % 60, 10);
     return `${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
 };
-
-const trash = () => console.log('hi');
 
 class Timer extends Component {
     static navigationOptions = {
@@ -27,7 +22,7 @@ class Timer extends Component {
     componentWillReceiveProps(nextProps, nextContext) {
         const currentProps = this.props;
         if(!currentProps.isPlaying && nextProps.isPlaying){
-
+            console.log('카운트 시작');
             const timerInterval = setInterval(()=>{
                 currentProps.addSecond()
             },1000);
@@ -35,6 +30,8 @@ class Timer extends Component {
                 timerInterval
             })
         } else if(currentProps.isPlaying && !nextProps.isPlaying){
+            console.log('카운트 안함');
+            //isplaying 안 바뀜
                 clearInterval(this.state.timerInterval);
         }
     }
@@ -50,8 +47,7 @@ class Timer extends Component {
     render() {
         const{isPlaying, elapsedTime, timeDuration,
             startTimer, restartTimer,addSecond, toggleRest, switchTimer, fontLoaded} = this.props;
-        console.log(toggleRest);
-        console.log(this.props.navigation);
+        console.log(this.props);
         return (
             <View style={styles.container}>
                 <StatusBar barStyle={'light-content'}/>
@@ -61,9 +57,9 @@ class Timer extends Component {
                 <View style={styles.upper}>
                     <Text style={styles.time}>{formatTime(timeDuration-elapsedTime)}</Text>
                 </View>
-
+                <FontText style={styles.twoddang}> It's nice to meet you</FontText>
                 <View style={styles.lower}>
-                    {fontLoaded ? <Text style={{...styles.twoddang, fontFamily:'Montserrat-MediumItalic'}}>It's nice to meet you</Text> : null}
+
                     <View style={styles.button}>
                     {!isPlaying &&
                     (<View style={styles.startbutton}>
@@ -107,16 +103,18 @@ const styles = StyleSheet.create({
     twoddang: {
         color: 'white',
         fontSize: 20,
-        margin: 20,
+        fontFamily:'Montserrat-MediumItalic',
+        textAlign: 'center'
     },
     button: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
         padding: 10,
+        marginTop: 0
     },
     startbutton : {
-       margin: 10
+       marginRight: 10
     },
     setting: {
         padding: 20,

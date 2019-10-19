@@ -7,6 +7,7 @@ class FontText extends Component {
 
     Loadtext(){
         if(this.props.fontLoaded){
+            console.log(this.props.fontLoaded);
             console.log('fontloaded!');
             return <Text style={this.props.style}>{this.props.children}</Text>
         } else {
@@ -21,7 +22,7 @@ class FontText extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const {fontLoaded} = state;
+    const {fontLoaded} = state.other;
     return {fontLoaded};
 };
 

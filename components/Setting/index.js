@@ -1,23 +1,45 @@
 import React, {Component} from 'react';
 import {Header} from 'react-navigation-stack';
 import {View, Text, StyleSheet, TextInput, Button, KeyboardAvoidingView, ScrollView} from 'react-native';
+import {bindActionCreators} from "redux";
+import {actionCreators as tomatoActions} from "../actions";
+import {connect} from 'react-redux';
 
 
-const formatTime = (time) => {
-    return `${time < 10 ? `0${time}` : `${time}`}`;
+//  let seconds = parseInt(time % 60, 10);
+const getHour = (time) => {
+    let hours = Math.floor(time/3600);
+    return `${hours < 10 ? `0${hours}` : null}`
 };
 
-class Setting extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            text: '' ,
-            workHour: '',
-            workMinute:'',
-            breakHour: '',
-            breakMinute:'',
-        };
+const getMinute = (time) => {
+    let hours = Math.floor(time/3600);
+    time -= hours * 3600;
+    let minutes = Math.floor(time / 60);
+    return `${minutes < 10 ? `0${minutes}` : minutes}`
+};
+
+
+function mapStateToProps(state){
+    const {workHour, workMinute, breakHour, breakMinute, words} = state.persisted;
+    return {workHour, workMinute, breakHour, breakMinute, words};
+}
+
+function mapDispatchToProps(dispatch){
+    return {
+        saveData: (data,name) => dispatch(tomatoActions.saveData(data,name)),
+        getData: (name) => dispatch(tomatoActions.getData(name)),
     }
+}
+
+class Setting extends Component {
+    state = {
+        words: '',
+        workHour: '',
+        workMinute: '',
+        breakHour: '',
+        breakMinute: '',
+    };
 
     static navigationOptions = {
         headerStyle: {
@@ -30,8 +52,8 @@ class Setting extends Component {
         },
     };
 
-
     render() {
+        const {workHour, workMinute, breakHour, breakMinute, words, saveData} = this.props;
         return (
             <KeyboardAvoidingView
                 keyboardVerticalOffset = {Header.HEIGHT + 20}
@@ -47,14 +69,16 @@ class Setting extends Component {
                                       keyboardType='number-pad'
                                         style={styles.textInput}
                                       textAlign={'right'}
-                           placeholder='00'/>
+                           placeholder={workHour}
+                           onBlur={event => {saveData(this.state.workHour, 'workHour')
+                           }}/>
                            <Text style={styles.text}> : </Text>
                            <TextInput onChangeText={workMinute => this.setState({ workMinute })}
                                       value={this.state.workMinute}
                                       keyboardType='number-pad'
                                       style={styles.textInput}
-
-                           placeholder='00'/>
+                           placeholder={workMinute}
+                           onBlur={event => saveData(this.state.workMinute, 'workMinute')}/>
                        </View>
                    </View>
                    <View style={styles.restingTime}>
@@ -65,14 +89,16 @@ class Setting extends Component {
                                       keyboardType='number-pad'
                                       style={styles.textInput}
                                       textAlign={'right'}
-                                      placeholder='00'/>
+                                      placeholder={breakHour}
+                                      onBlur={event => saveData(this.state.breakHour, 'breakHour')}
+                           />
                            <Text style={styles.text}> : </Text>
                            <TextInput onChangeText={breakMinute => this.setState({ breakMinute })}
                                       value={this.state.breakMinute}
                                       keyboardType='number-pad'
                                       style={styles.textInput}
-
-                                      placeholder='00'/>
+                                      onBlur={event => saveData(this.state.breakMinute, 'breakMinute')}
+                                      placeholder={breakMinute}/>
                        </View>
                    </View>
                    <View style={styles.words}>
@@ -81,10 +107,11 @@ class Setting extends Component {
                            style={{color: 'white',
                                fontSize: 30,
                                fontWeight: '100'}}
-                           onChangeText={text => this.setState({ text })}
-                           value={this.state.text}
+                           onChangeText={words => this.setState({ words })}
+                           value={this.state.words}
                            textAlign={'center'}
-                           placeholder='No Pain, No Gain'
+                           placeholder={words}
+                           onBlur={event => saveData(this.state.words, 'words')}
                        />
                    </View>
                </View>
@@ -147,4 +174,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default Setting;
+export default connect(mapStateToProps,mapDispatchToProps)(Setting);
