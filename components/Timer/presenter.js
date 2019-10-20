@@ -3,9 +3,13 @@ import {View, Text, StyleSheet, StatusBar} from 'react-native';
 import Button from '../Button';
 import FontText from "../FontText";
 import * as Font from "expo-font";
+import Swipeable from 'react-native-swipeable';
+import {colors as MyColors} from '../color';
 
-// {fontLoaded ? <Text style={{...styles.twoddang, fontFamily:'Montserrat-MediumItalic'}}>It's nice to meet you</Text> : null}
-//<FontText style={styles.twoddang}> It's nice to meet you</FontText>
+
+let Mycolors = MyColors;
+
+
 
 const formatTime = (time) => {
     let minutes = Math.floor(time/60);
@@ -18,6 +22,10 @@ class Timer extends Component {
     static navigationOptions = {
         title: 'Timer',
     };
+
+
+    Content = <Text></Text>;
+
 
     componentWillReceiveProps(nextProps, nextContext) {
         const currentProps = this.props;
@@ -42,28 +50,43 @@ class Timer extends Component {
         }
     }
 
-    async componentDidMount() {
+    async componentWillMount() {
         await Font.loadAsync({
             'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),
             'Montserrat-MediumItalic': require('../../assets/fonts/Montserrat-MediumItalic.ttf'),
         });
         this.props.fontLoader();
-    }
+}
 
     render() {
         const{isPlaying, elapsedTime,
-            startTimer, restartTimer, toggleRest, switchTimer, workTime, restTime, words} = this.props;
+            startTimer, restartTimer, toggleRest, switchTimer, workTime, restTime, words, setColor, colors} = this.props;
+
         return (
-            <View style={styles.container}>
+
+            <View style={{...styles.container, backgroundColor: Mycolors[colors]}}>
+
                 <StatusBar barStyle={'light-content'}/>
                 <View style={styles.setting}>
-                    <Button iconName='cog'  onPress={() => this.props.navigation.navigate('Setting')}/>
+                    <Button iconName='cog'  onPress={() => {
+                        this.props.navigation.navigate('Setting', {
+                            colors: this.props.colors
+                        });
+                        }}
+                   />
                 </View>
                 <View style={styles.upper}>
                     {!toggleRest ?  <Text style={styles.time}>{formatTime(workTime-elapsedTime)}</Text> : null}
                     {toggleRest ? <Text style={styles.time}>{formatTime(restTime-elapsedTime)}</Text> : null}
                 </View>
+                <Swipeable leftContent={this.Content}
+                           onLeftActionRelease={event => setColor('right')}
+                onRightActionRelease={event => setColor('left')}
+                rightContent={this.Content}
+                leftActionActivationDistance={70}
+                rightActionActivationDistance={70}>
                 <FontText style={styles.twoddang}> {words}</FontText>
+                </Swipeable>
                 <View style={styles.lower}>
 
                     <View style={styles.button}>
@@ -82,6 +105,8 @@ class Timer extends Component {
                 </View>
 
             </View>
+
+
         );
     }
 }
@@ -89,7 +114,7 @@ class Timer extends Component {
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor:'#00ccff'
+        backgroundColor:`blue`
     },
     upper: {
         flex: 2,

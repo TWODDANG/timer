@@ -7,13 +7,14 @@ import {createAppContainer} from "react-navigation";
 
 function mapStateToProps(state){
     const {isPlaying, elapsedTime, toggleRest, fontLoaded} = state.other;
-    const {words, workMinute, workHour, breakHour, breakMinute} = state.persisted;
+    const {words, workMinute, workHour, breakHour, breakMinute, colors} = state.persisted;
     return {
         isPlaying,
         elapsedTime,
         toggleRest,
         fontLoaded,
         words,
+        colors,
         workTime: Number(workHour) * 3600 + Number(workMinute) * 60,
         restTime: Number(breakHour) * 3600 + Number(breakMinute) * 60,
     }
@@ -26,6 +27,7 @@ function mapDispatchToProps(dispatch){
         addSecond: (time) => dispatch(tomatoActions.addSecond(time)),
         switchTimer: () => dispatch(tomatoActions.switchTimer()),
         fontLoader: bindActionCreators(tomatoActions.loadFont, dispatch),
+        setColor: (direction) => dispatch(tomatoActions.setColor(direction)),
 
     }
 }

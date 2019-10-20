@@ -5,7 +5,7 @@ export const RESTART_TIMER = 'RESTART_TIMER';
 export const ADD_SECOND = 'ADD_SECOND';
 export const SWITCH_TIMER = 'SWITCH_TIMER';
 export const SAVE_DATA = 'SAVE_DATA';
-
+export const SET_COLOR  = 'SET_COLOR';
 
 
 //Action Creators
@@ -49,10 +49,17 @@ function saveData(data, name){
     }
 }
 
+function setColor(direction){
+    return {
+        type: SET_COLOR,
+        direction
+    }
+}
+
 
 
 const actionCreators = {
-    startTimer, restartTimer, addSecond, switchTimer, loadFont, saveData
+    startTimer, restartTimer, addSecond, switchTimer, loadFont, saveData, setColor
 };
 
 export {actionCreators};

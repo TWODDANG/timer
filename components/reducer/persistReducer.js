@@ -1,11 +1,12 @@
 import * as types from '../actions';
 
 const initialState = {
-    words: 'hihi',
-    workHour: '00',
-    workMinute: '20',
-    breakHour: '00',
-    breakMinute: '10',
+    words: `It's nice to meet you`,
+    workHour: '0',
+    workMinute: '25',
+    breakHour: '0',
+    breakMinute: '5',
+    colors : 0,
 };
 
 
@@ -13,6 +14,8 @@ function persistReducer(state=initialState, action){
     switch(action.type){
         case types.SAVE_DATA:
             return applySaveData(state, action.data, action.name);
+        case types.SET_COLOR:
+            return applySetColor(state, action.direction);
         default:
             return state;
     }
@@ -50,6 +53,30 @@ function applySaveData(state, data, name){
             return state;
     }
 
+}
+
+function applySetColor (state, direction){
+    if (direction === 'right') {
+        let colors = state.colors;
+        colors = colors + 1;
+        if(colors > 4){ // 전 color가 마지막일 경우, 0으로 초기화
+            colors = 0;
+        }
+        return {
+            ...state,
+            colors
+        }
+    } else {
+        let colors = state.colors;
+        colors = colors - 1;
+        if(colors < 0){ // 전 color가 처음일 경우, 마지막 칼라로 초기화
+            colors = 4;
+        }
+        return {
+            ...state,
+            colors
+        }
+    }
 }
 
 

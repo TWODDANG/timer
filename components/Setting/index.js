@@ -4,17 +4,20 @@ import {View, Text, StyleSheet, TextInput, Button, KeyboardAvoidingView, ScrollV
 import {bindActionCreators} from "redux";
 import {actionCreators as tomatoActions} from "../actions";
 import {connect} from 'react-redux';
+import {colors} from '../color'
 
+let Mycolors = colors;
 
-//  let seconds = parseInt(time % 60, 10);
 const formatTime = (time) => {
-    return `${time < 10 ? `0${time}` : null}`
+    return `${time < 10 ? `0${time}` : time}`
 };
+
+let SelectedColor = 'blue';
 
 
 function mapStateToProps(state){
-    const {workHour, workMinute, breakHour, breakMinute, words} = state.persisted;
-    return {workHour, workMinute, breakHour, breakMinute, words};
+    const {workHour, workMinute, breakHour, breakMinute, words, colors} = state.persisted;
+    return {workHour, workMinute, breakHour, breakMinute, words, colors};
 }
 
 function mapDispatchToProps(dispatch){
@@ -33,26 +36,31 @@ class Setting extends Component {
         breakMinute: '',
     };
 
-    static navigationOptions = {
-        headerStyle: {
-            backgroundColor: '#00ccff',
-            elevation: 0,
-        },
-        headerTintColor: 'white',
-        headerTitleStyle: {
-            fontWeight: '900',
-        },
+    static navigationOptions = ({navigation}) => {
+        const {colors} = navigation.state.params;
+        return {
+            headerStyle: {
+                backgroundColor: Mycolors[colors],
+                elevation: 0,
+            },
+            headerTintColor: 'white',
+            headerTitleStyle: {
+                fontWeight: '900',
+            },
+        }
+
     };
 
     render() {
-        const {workHour, workMinute, breakHour, breakMinute, words, saveData} = this.props;
+        const {workHour, workMinute, breakHour, breakMinute, words, saveData, colors} = this.props;
+        SelectedColor = Mycolors[colors];
         return (
             <KeyboardAvoidingView
                 keyboardVerticalOffset = {Header.HEIGHT + 20}
                 style={styles.keyboardAvoidingView}
                 behavior='padding'>
                 <ScrollView style={styles.scrollView}>
-               <View style={styles.container}>
+               <View style={{...styles.container, backgroundColor: Mycolors[colors]}}>
                    <View style={styles.workingTime}>
                        <View style={{margin: 50}}><Text style={styles.text}>My Working Time</Text></View>
                        <View style={styles.inputView}>
@@ -117,19 +125,17 @@ class Setting extends Component {
 
 const styles = StyleSheet.create({
     keyboardAvoidngView: {
-        backgroundColor: '#00ccff',
         flex: 1
     },
     scrollView: {
-        backgroundColor: '#00ccff',
+
     },
     container: {
         flex: 1,
-        backgroundColor: '#00ccff'
+        backgroundColor: 'blue'
     },
     inner: {
         justifyContent: 'flex-end',
-        backgroundColor: '#00ccff',
     },
     workingTime: {
         flex: 1,
